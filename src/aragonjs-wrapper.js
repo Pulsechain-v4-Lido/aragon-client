@@ -40,9 +40,6 @@ const prepareAppsForFrontend = (apps, daoAddress, gateway) => {
 
   const getAppTags = app => {
     const apmRegistry = getAPMRegistry(app)
-
-    console.log('app status: ', app.status)
-    console.log('apmRegistry: ', apmRegistry)
     const tags = []
     if (app.status) {
       tags.push(app.status)
