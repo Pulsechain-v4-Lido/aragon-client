@@ -312,6 +312,8 @@ class App extends React.Component {
       wrapper,
     } = this.state
 
+    console.log(repos, 'installed repos')
+
     const { address: intentAddress = null, label: intentLabel = '' } =
       identityIntent || {}
 

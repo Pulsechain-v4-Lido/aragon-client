@@ -194,11 +194,6 @@ export function getNetworkByChainId(chainId = -1) {
 }
 
 export function sanitizeNetworkType(networkType) {
-  if (networkType === 'private') {
-    return 'localhost'
-  } else if (networkType === 'main') {
-    return 'mainnet'
-  }
   return networkType
 }
 

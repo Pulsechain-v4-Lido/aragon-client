@@ -40,7 +40,7 @@ function WalletContextProvider({ children }) {
       .then(networkType => {
         console.log('networkType: ', networkType)
         if (!cancel) {
-          setNetworkType(networkType)
+          setNetworkType(NETWORK_TYPE_DEFAULT)
         }
         return null
       })

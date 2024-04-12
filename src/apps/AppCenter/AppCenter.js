@@ -105,6 +105,10 @@ const AppCenter = React.memo(function AppCenter({
 }) {
   const [upgradePanelOpened, setUpgradePanelOpened] = useState(false)
 
+  console.log('repos')
+  console.log(repos)
+  console.log(reposLoading)
+
   const extendedRepos = useMemo(
     () => getExtendedRepos(appInstanceGroups, repos),
     [appInstanceGroups, repos]

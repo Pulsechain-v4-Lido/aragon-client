@@ -27,6 +27,7 @@ class AppIFrame extends React.Component {
   state = {
     isLoading: false,
   }
+
   componentDidMount() {
     window.addEventListener('message', this.handleReceiveMessage, false)
     this.navigateIFrame(this.props.app.src)
@@ -67,11 +68,14 @@ class AppIFrame extends React.Component {
     // Rather than load src=undefined, this component hides itself. That way,
     // if the user later navigates back to the same src, we don't have to
     // reload the iframe.
+    console.log('iframe navigate to app.src: ', src)
+
     if (!src) return
 
     // Cache src to avoid cases where the iframe would load the same page as
     // before
     this.src = src
+    console.log('iframe navigate to app.src: ', this.src)
 
     // Detach the iframe from the DOM before setting the src to avoid adding
     // history state
@@ -80,7 +84,7 @@ class AppIFrame extends React.Component {
     this.iframe.src = src
     containerNode.appendChild(this.iframe)
 
-    this.loadingStart()
+    // this.loadingStart()
 
     this.props.onNavigate(this.props.app)
   }

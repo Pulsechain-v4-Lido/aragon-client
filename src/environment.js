@@ -9,7 +9,15 @@ import {
 } from './local-settings'
 import { getNetworkConfig } from './network-config'
 
-const appsOrder = ['TokenManager', 'Voting', 'Finance', 'Agent']
+const appsOrder = [
+  'TokenManager',
+  'Voting',
+  'Finance',
+  'Agent',
+  'Lido',
+  'NodeOperator',
+  'Oracle',
+]
 
 const networkType = getEthNetworkType()
 
@@ -62,7 +70,19 @@ export const sortAppsPair = (app1, app2) => {
 // Use appOverrides to override specific keys in an app instance, e.g. the start_url or script location
 export const appOverrides = {
   // Needed to change app name on sidebar for old versions whose aragonPM repo content cannot be changed anymore
-  [appIds['TokenManager']]: { name: 'Tokens' },
+  [appIds['TokenManager']]: { name: 'Tokens', start_url: '/' },
+  [appIds['Voting']]: { name: 'Voting', start_url: '/' },
+  [appIds['Finance']]: { name: 'Finance', start_url: '/' },
+  [appIds['Agent']]: { name: 'Agent', start_url: '/' },
+  [appIds['Lido']]: {
+    name: 'Lido',
+    start_url: '/',
+  },
+  [appIds['NodeOperator']]: {
+    name: 'NodeOperator',
+    start_url: '/',
+  },
+  [appIds['Oracle']]: { name: 'Oracle', start_url: '/' },
 }
 
 export const appLocator = parseAppLocator(getAppLocator())

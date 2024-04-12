@@ -56,12 +56,15 @@ const prepareAppsForFrontend = (apps, daoAddress, gateway) => {
 
   return applyAppOverrides(apps)
     .map(app => {
+      console.log('checking base url app: ', app)
+      console.log('checking gateway: ', gateway)
       const baseUrl = appBaseUrl(app, gateway)
+      console.log('baseUrl: ', baseUrl)
       // Remove the starting slash from the start_url field
       // so the absolute path can be resolved from baseUrl.
       const startUrl = removeStartingSlash(app['start_url'] || '')
       const src = baseUrl ? resolvePathname(startUrl, baseUrl) : ''
-
+      console.log(src)
       return {
         ...app,
         src,

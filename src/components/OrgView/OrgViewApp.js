@@ -219,6 +219,7 @@ function App({
   }
 
   const app = apps.find(app => addressesEqual(app.proxyAddress, instanceId))
+  console.log('loading app...', app)
 
   return app ? (
     <AppIFrame
