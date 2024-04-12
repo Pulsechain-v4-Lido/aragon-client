@@ -70,17 +70,35 @@ export const sortAppsPair = (app1, app2) => {
 // Use appOverrides to override specific keys in an app instance, e.g. the start_url or script location
 export const appOverrides = {
   // Needed to change app name on sidebar for old versions whose aragonPM repo content cannot be changed anymore
-  [appIds['TokenManager']]: { name: 'Tokens', start_url: '/' },
-  [appIds['Voting']]: { name: 'Voting', start_url: '/' },
-  [appIds['Finance']]: { name: 'Finance', start_url: '/' },
-  [appIds['Agent']]: { name: 'Agent', start_url: '/' },
+  [appIds['TokenManager']]: {
+    name: 'Tokens',
+    start_url: '/',
+    src: 'https://aragon-voting.netlify.app',
+  },
+  [appIds['Voting']]: {
+    name: 'Voting',
+    start_url: '/',
+    src: 'https://aragon-token-manager.netlify.app',
+  },
+  [appIds['Finance']]: {
+    name: 'Finance',
+    start_url: '/',
+    src: 'https://aragon-finance.netlify.app',
+  },
+  [appIds['Agent']]: {
+    name: 'Agent',
+    start_url: '/',
+    src: 'https://aragon-agent.netlify.app',
+  },
   [appIds['Lido']]: {
     name: 'Lido',
-    start_url: '/',
+    start_url: '/index.html',
+    src: 'https://ipfs.io/ipfs/QmRSXAZrF2xR5rgbUdErDV6LGtjqQ1T4AZgs6yoXosMQc3',
   },
   [appIds['NodeOperator']]: {
     name: 'NodeOperator',
     start_url: '/',
+    src: 'https://aragon-node-operator.netlify.app',
   },
   [appIds['Oracle']]: { name: 'Oracle', start_url: '/' },
 }
