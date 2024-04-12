@@ -98,11 +98,14 @@ export const appOverrides = {
   [appIds['NodeOperator']]: {
     name: 'NodeOperator',
     start_url: '/',
-    src: 'https://aragon-node-operator.netlify.app',
+    src: 'https://ipfs.io/ipfs/QmT4jdi1FhMEKUvWSQ1hwxn36WH9KjegCuZtAhJkchRkzp', //
   },
-  [appIds['Oracle']]: { name: 'Oracle', start_url: '/' },
+  [appIds['Oracle']]: {
+    name: 'Oracle',
+    start_url: '/',
+    src: 'https://ipfs.io/ipfs/QmWTacPAUrQaCvAMVcqnTXvnr9TLfjWshasc4xjSheqz2i',
+  },
 }
-
 export const appLocator = parseAppLocator(getAppLocator())
 
 export const ipfsDefaultConf = {
