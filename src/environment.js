@@ -97,12 +97,12 @@ export const appOverrides = {
   },
   [appIds['NodeOperator']]: {
     name: 'NodeOperator',
-    start_url: '/',
+    start_url: '/index.html',
     src: 'https://ipfs.io/ipfs/QmT4jdi1FhMEKUvWSQ1hwxn36WH9KjegCuZtAhJkchRkzp', //
   },
   [appIds['Oracle']]: {
     name: 'Oracle',
-    start_url: '/',
+    start_url: '/index.html',
     src: 'https://ipfs.io/ipfs/QmWTacPAUrQaCvAMVcqnTXvnr9TLfjWshasc4xjSheqz2i',
   },
 }
