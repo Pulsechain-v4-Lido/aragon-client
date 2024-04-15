@@ -11,5 +11,5 @@ export default {
   Voting: namehash('aragon-voting.lidopm.eth'),
   Oracle: namehash('oracle.lidopm.eth'),
   Lido: namehash('lido.lidopm.eth'),
-  NodeOperator: namehash('node-operators-registry.lidopm.eth'),
+  StakingRouter: namehash('node-operators-registry.lidopm.eth'),
 }

@@ -31,7 +31,7 @@
       "network": "rinkeby"
     },
     "pulsechain": {
-      "registry": "0x8CC052FE7E79BdFbcaAB2a9af900E0621ce02210",
+      "registry": "0x6F659F1e277bE945413426DC63D04e55Ab080FaC",
       "appName": "aragon.lidopm.eth",
       "network": "pulsechain"
     }

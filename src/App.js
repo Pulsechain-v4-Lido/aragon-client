@@ -51,7 +51,7 @@ const SELECTOR_NETWORKS = [
     'Ethereum Testnet (Rinkeby)',
     'https://rinkeby.client.aragon.org/',
   ],
-  ['pulsechain', 'Pulse Chain V4', 'https://pulsechain.client.aragon.org/'],
+  ['pulsechain', 'Pulse Chain V4', 'https://pulsechain-poolsea.netlify.app/'],
   ['goerli', 'Ethereum Testnet (Göerli)', 'https://testnet.lido.fi/'],
 ]
 if (network.type === 'ropsten') {
@@ -311,8 +311,6 @@ class App extends React.Component {
       web3,
       wrapper,
     } = this.state
-
-    console.log(repos, 'installed repos')
 
     const { address: intentAddress = null, label: intentLabel = '' } =
       identityIntent || {}

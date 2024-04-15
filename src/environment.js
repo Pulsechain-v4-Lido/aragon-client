@@ -15,7 +15,7 @@ const appsOrder = [
   'Finance',
   'Agent',
   'Lido',
-  'NodeOperator',
+  'StakingRouter',
   'Oracle',
 ]
 
@@ -95,8 +95,8 @@ export const appOverrides = {
     start_url: '/index.html',
     src: 'https://ipfs.io/ipfs/QmRSXAZrF2xR5rgbUdErDV6LGtjqQ1T4AZgs6yoXosMQc3',
   },
-  [appIds['NodeOperator']]: {
-    name: 'NodeOperator',
+  [appIds['StakingRouter']]: {
+    name: 'StakingRouter',
     start_url: '/index.html',
     src: 'https://ipfs.io/ipfs/QmT4jdi1FhMEKUvWSQ1hwxn36WH9KjegCuZtAhJkchRkzp', //
   },
