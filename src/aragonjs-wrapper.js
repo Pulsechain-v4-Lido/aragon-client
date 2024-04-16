@@ -320,6 +320,7 @@ const initWrapper = async (
 
   wrapper.connectAppIFrame = async (iframeElt, proxyAddress) => {
     const provider = new providers.WindowMessage(iframeElt.contentWindow)
+    console.log("proxyAddress:", proxyAddress)
     const appContext = (await wrapper.runApp(proxyAddress))(provider)
 
     if (subscriptions.connectedApp) {

@@ -51,7 +51,7 @@ const SELECTOR_NETWORKS = [
     'Ethereum Testnet (Rinkeby)',
     'https://rinkeby.client.aragon.org/',
   ],
-  ['pulsechain', 'Pulse Chain V4', 'https://pulsechain-poolsea.netlify.app/'],
+  ['private', 'Pulse Chain V4', 'https://pulsechain-poolsea.netlify.app/'],
   ['goerli', 'Ethereum Testnet (Göerli)', 'https://testnet.lido.fi/'],
 ]
 if (network.type === 'ropsten') {

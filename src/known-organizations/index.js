@@ -253,7 +253,7 @@ export const KnownOrganizations = {
   pulsechain: new Map(
     [
       {
-        address: '0x6F659F1e277bE945413426DC63D04e55Ab080FaC',
+        address: '0x214DCdEF239b4C5AB4cd2d5185d7964170E95251',
         domain: 'lido-dao.aragonid.eth',
         image: lidoImage,
         name: 'PoolSea',

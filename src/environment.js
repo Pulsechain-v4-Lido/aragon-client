@@ -88,7 +88,7 @@ export const appOverrides = {
   [appIds['Agent']]: {
     name: 'Agent',
     start_url: '/',
-    src: 'https://aragon-agent.netlify.app',
+    src: "http://localhost:3005", //'https://aragon-agent.netlify.app',
   },
   [appIds['Lido']]: {
     name: 'Lido',
