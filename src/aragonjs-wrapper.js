@@ -17,12 +17,7 @@ import { getEthSubscriptionEventDelay } from './local-settings'
 import { workerFrameSandboxDisabled } from './security/configuration'
 import { appBaseUrl } from './url-utils'
 import { noop, removeStartingSlash, pollEvery } from './utils'
-import {
-  getGasPrice,
-  getWeb3,
-  isEmptyAddress,
-  isValidEnsName,
-} from './web3-utils'
+import { getWeb3, isEmptyAddress, isValidEnsName } from './web3-utils'
 import SandboxedWorker from './worker/SandboxedWorker'
 import WorkerSubscriptionPool from './worker/WorkerSubscriptionPool'
 
@@ -267,8 +262,8 @@ const initWrapper = async (
   const wrapper = new Aragon(daoAddress, {
     provider,
     // Let web3 provider handle gas estimations on mainnet
-    defaultGasPriceFn: () =>
-      getGasPrice({ mainnet: { disableEstimate: true } }),
+    // defaultGasPriceFn: () =>
+    //   getGasPrice({ mainnet: { disableEstimate: true } }),
     apm: {
       ensRegistryAddress: contractAddresses.ensRegistry,
       ipfs: ipfsConf,
@@ -320,7 +315,8 @@ const initWrapper = async (
 
   wrapper.connectAppIFrame = async (iframeElt, proxyAddress) => {
     const provider = new providers.WindowMessage(iframeElt.contentWindow)
-    console.log("proxyAddress:", proxyAddress)
+    console.log('proxyAddress:', proxyAddress)
+
     const appContext = (await wrapper.runApp(proxyAddress))(provider)
 
     if (subscriptions.connectedApp) {

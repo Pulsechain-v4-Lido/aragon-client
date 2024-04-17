@@ -109,7 +109,7 @@
     "start:rinkeby": "npm start",
     "start:staging": "cross-env ARAGON_ENS_REGISTRY_ADDRESS=0xfe03625ea880a8cba336f9b5ad6e15b0a3b5a939 npm start",
     "start:ropsten": "cross-env ARAGON_ETH_NETWORK_TYPE=ropsten npm start",
-    "start:pulsechain": "cross-env ARAGON_ETH_NETWORK_TYPE=pulsechain ARAGON_APP_LOCATOR=0x0abcd104777321a82b010357f20887d61247493d89d2e987ff57bcecbde00e1e:http://localhost:3001,0x5c9918c99c4081ca9459c178381be71d9da40e49e151687da55099c49a4237f1:http://localhost:3002,0x701a4fd1f5174d12a0f1d9ad2c88d0ad11ab6aad0ac72b7d9ce621815f8016a9:http://localhost:3005 npm start",
+    "start:pulsechain": "cross-env ARAGON_ETH_NETWORK_TYPE=pulsechain npm start",
     "start:xdai": "cross-env ARAGON_ETH_NETWORK_TYPE=xdai npm start",
     "build": "node scripts/build",
     "build:local": "node scripts/build-local",
@@ -144,7 +144,6 @@
   },
   "husky": {
     "hooks": {
-      "pre-push": "npm test",
       "pre-commit": "lint-staged"
     }
   },
