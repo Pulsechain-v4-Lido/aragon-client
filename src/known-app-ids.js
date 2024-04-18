@@ -12,4 +12,7 @@ export default {
   Oracle: namehash('oracle.lidopm.eth'),
   Lido: namehash('lido.lidopm.eth'),
   StakingRouter: namehash('node-operators-registry.lidopm.eth'),
+  Kernel: namehash('kernel.aragonpm.eth'),
+  ACL: namehash('acl.aragonpm.eth'),
+  EVMREGISTRY: namehash('evmreg.aragonpm.eth'),
 }

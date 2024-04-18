@@ -17,7 +17,12 @@ import { getEthSubscriptionEventDelay } from './local-settings'
 import { workerFrameSandboxDisabled } from './security/configuration'
 import { appBaseUrl } from './url-utils'
 import { noop, removeStartingSlash, pollEvery } from './utils'
-import { getWeb3, isEmptyAddress, isValidEnsName } from './web3-utils'
+import {
+  getGasPrice,
+  getWeb3,
+  isEmptyAddress,
+  isValidEnsName,
+} from './web3-utils'
 import SandboxedWorker from './worker/SandboxedWorker'
 import WorkerSubscriptionPool from './worker/WorkerSubscriptionPool'
 
@@ -54,6 +59,11 @@ const prepareAppsForFrontend = (apps, daoAddress, gateway) => {
       const baseUrl = appBaseUrl(app, gateway)
       // Remove the starting slash from the start_url field
       // so the absolute path can be resolved from baseUrl.
+      // Remove the starting slash from the start_url field
+      // so the absolute path can be resolved from baseUrl.
+      const startUrl = removeStartingSlash(app['start_url'] || '')
+      const src = baseUrl ? resolvePathname(startUrl, baseUrl) : ''
+
       return {
         ...app,
         baseUrl,
@@ -262,8 +272,11 @@ const initWrapper = async (
   const wrapper = new Aragon(daoAddress, {
     provider,
     // Let web3 provider handle gas estimations on mainnet
-    // defaultGasPriceFn: () =>
-    //   getGasPrice({ mainnet: { disableEstimate: true } }),
+    defaultGasPriceFn: () =>
+      getGasPrice({
+        mainnet: { disableEstimate: true },
+        pulsechain: { disableEstimate: true },
+      }),
     apm: {
       ensRegistryAddress: contractAddresses.ensRegistry,
       ipfs: ipfsConf,
@@ -313,19 +326,25 @@ const initWrapper = async (
     { ipfsConf }
   )
 
-  wrapper.connectAppIFrame = async (iframeElt, proxyAddress) => {
+  wrapper.connectAppIFrame = async (iframeElt, proxyAddress, appAbi) => {
     const provider = new providers.WindowMessage(iframeElt.contentWindow)
     console.log('proxyAddress:', proxyAddress)
+    try {
+      const appContext = (await wrapper.runApp(proxyAddress, appAbi))(provider)
+      console.log('appContext')
+      console.log(appContext)
 
-    const appContext = (await wrapper.runApp(proxyAddress))(provider)
-
-    if (subscriptions.connectedApp) {
-      subscriptions.connectedApp.unsubscribe()
+      if (subscriptions.connectedApp) {
+        subscriptions.connectedApp.unsubscribe()
+      }
+      subscriptions.connectedApp = {
+        unsubscribe: appContext.shutdown,
+      }
+      return appContext
+    } catch (e) {
+      console.log(e)
+      return null
     }
-    subscriptions.connectedApp = {
-      unsubscribe: appContext.shutdown,
-    }
-    return appContext
   }
 
   wrapper.cancel = () => {
