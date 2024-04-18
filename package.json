@@ -109,7 +109,7 @@
     "start:rinkeby": "npm start",
     "start:staging": "cross-env ARAGON_ENS_REGISTRY_ADDRESS=0xfe03625ea880a8cba336f9b5ad6e15b0a3b5a939 npm start",
     "start:ropsten": "cross-env ARAGON_ETH_NETWORK_TYPE=ropsten npm start",
-    "start:pulsechain": "cross-env ARAGON_ETH_NETWORK_TYPE=pulsechain npm start",
+    "start:pulsechain": "cross-env ARAGON_ETH_NETWORK_TYPE=pulsechain ARAGON_APP_LOCATOR=local npm start",
     "start:xdai": "cross-env ARAGON_ETH_NETWORK_TYPE=xdai npm start",
     "build": "node scripts/build",
     "build:local": "node scripts/build-local",
