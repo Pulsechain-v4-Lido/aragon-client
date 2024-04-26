@@ -176,41 +176,13 @@ export const defaultEthNode =
 export const web3Providers = {
   default: new Web3.providers.WebsocketProvider(defaultEthNode),
 }
-/***
- * 
- * [appIds['TokenManager']]: {
-    name: 'Tokens',
-    start_url: '/',
-    src: 'https://aragon-voting.netlify.app',
-  },
-  [appIds['Voting']]: {
-    name: 'Voting',
-    start_url: '/',
-    src: 'https://aragon-token-manager.netlify.app',
-  },
-  [appIds['Finance']]: {
-    name: 'Finance',
-    start_url: '/',
-    src: 'https://aragon-finance.netlify.app',
-  },
-  [appIds['Agent']]: {
-    name: 'Agent',
-    start_url: '/',
-    src: 'https://aragon-agent.netlify.app',
-  },
-  [appIds['Lido']]: {
-    name: 'Lido',
-    start_url: '/index.html',
-    src: 'https://ipfs.io/ipfs/QmRSXAZrF2xR5rgbUdErDV6LGtjqQ1T4AZgs6yoXosMQc3',
-  },
-  [appIds['StakingRouter']]: {
-    name: 'StakingRouter',
-    start_url: '/index.html',
-    src: 'https://ipfs.io/ipfs/QmT4jdi1FhMEKUvWSQ1hwxn36WH9KjegCuZtAhJkchRkzp', //
-  },
-  [appIds['Oracle']]: {
-    name: 'Oracle',
-    start_url: '/index.html',
-    src: 'https://ipfs.io/ipfs/QmWTacPAUrQaCvAMVcqnTXvnr9TLfjWshasc4xjSheqz2i',
-  },
- */
+export function getParsedAppLocator(networkType) {
+  return parseAppLocator(getAppLocator(networkType))
+}
+
+export const getEthNode = networkType => {
+  return (
+    getDefaultEthNode(networkType) ||
+    getNetworkConfig(networkType).nodes.defaultEth
+  )
+}

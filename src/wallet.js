@@ -24,7 +24,6 @@ function WalletContextProvider({ children }) {
 
   const [walletWeb3, setWalletWeb3] = useState(null)
   const [networkType, setNetworkType] = useState(NETWORK_TYPE_DEFAULT)
-  console.log(networkType)
   useEffect(() => {
     let cancel = false
 

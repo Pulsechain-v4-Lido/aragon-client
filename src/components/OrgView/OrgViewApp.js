@@ -76,7 +76,6 @@ function App({
   const { instanceId, instancePath } = routing.mode
 
   const targetApp = apps.filter(app => app.proxyAddress === instanceId)
-  console.log('targetApp', targetApp)
 
   const appsLoading = appsStatus === APPS_STATUS_LOADING
   const reposLoading = appsLoading || Boolean(apps.length && !repos.length)
@@ -222,7 +221,6 @@ function App({
   }
 
   const app = apps.find(app => addressesEqual(app.proxyAddress, instanceId))
-  console.log('loading app...', app)
 
   return app ? (
     <AppIFrame

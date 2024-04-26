@@ -42,6 +42,7 @@ function Onboarding({ selectorNetworks, web3 }) {
     balance,
     isContract: isContractAccount,
     web3: walletWeb3,
+    networkType
   } = useWallet()
 
   const [connectModalOpened, setConnectModalOpened] = useState(false)
@@ -165,7 +166,7 @@ function Onboarding({ selectorNetworks, web3 }) {
         sortedEmbeddedTemplates.map(async template => {
           let repoAddress
           try {
-            repoAddress = await resolveEnsDomain(template.id)
+            repoAddress = await resolveEnsDomain(networkType, web3, template.id)
           } catch (_) {}
 
           return repoAddress

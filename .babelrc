@@ -1,30 +1,13 @@
 {
   "presets": [
-    [
-      "@babel/preset-env",
-      {
-        "modules": false,
-        "useBuiltIns": "entry",
-        "corejs": 3,
-      }
-    ],
+    "@babel/preset-env",
     "@babel/preset-react"
   ],
   "plugins": [
     ["styled-components", { "displayName": true }],
-    "@babel/plugin-proposal-class-properties"
+    "@babel/plugin-proposal-class-properties",
+    ["@babel/plugin-transform-optional-chaining", {"noDocumentAll": false}, "transform"],
+    ["@babel/plugin-proposal-optional-chaining", {"noDocumentAll": false}, "proposal"],
+    
   ],
-  "env": {
-    "test": {
-      "presets": [
-        [
-          "@babel/preset-env",
-          {
-            "modules": "commonjs",
-            "targets": { "node": "current" }
-          }
-        ]
-      ]
-    }
-  }
 }
