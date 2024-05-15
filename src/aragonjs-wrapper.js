@@ -5,18 +5,26 @@ import Aragon, {
   getRecommendedGasLimit,
   providers,
 } from '@aragon/wrapper'
-import { appOverrides, sortAppsPair } from './environment'
+import {
+  appOverrides,
+  sortAppsPair,
+  ipfsDefaultConf,
+  web3Providers,
+  contractAddresses,
+} from './environment'
 import { NoConnection, DAONotFound } from './errors'
-import { getEthSubscriptionEventDelay, getIpfsGateway } from './local-settings'
+import { getEthSubscriptionEventDelay } from './local-settings'
 import { workerFrameSandboxDisabled } from './security/configuration'
-import { appBaseUrl } from './util/url'
-import { noop, removeStartingSlash, pollEvery } from './util/utils'
-import { getWeb3, isEmptyAddress, isValidEnsName } from './util/web3'
+import { appBaseUrl } from './url-utils'
+import { noop, removeStartingSlash, pollEvery } from './utils'
+import {
+  getGasPrice,
+  getWeb3,
+  isEmptyAddress,
+  isValidEnsName,
+} from './web3-utils'
 import SandboxedWorker from './worker/SandboxedWorker'
 import WorkerSubscriptionPool from './worker/WorkerSubscriptionPool'
-// import { getOrganizationByAddress } from './services/gql'
-import { getNetworkConfig } from './network-config'
-import { getNetworkSettings } from './util/network'
 
 const POLL_DELAY_CONNECTIVITY = 2000
 
@@ -24,7 +32,7 @@ const applyAppOverrides = apps =>
   apps.map(app => ({ ...app, ...(appOverrides[app.appId] || {}) }))
 
 // Sort apps, apply URL overrides, and attach data useful to the frontend
-const prepareAppsForFrontend = (apps, daoAddress, networkType) => {
+const prepareAppsForFrontend = (apps, daoAddress, gateway) => {
   const hasWebApp = app => Boolean(app['start_url'])
 
   const getAPMRegistry = ({ appName = '' }) =>
@@ -32,7 +40,6 @@ const prepareAppsForFrontend = (apps, daoAddress, networkType) => {
 
   const getAppTags = app => {
     const apmRegistry = getAPMRegistry(app)
-
     const tags = []
     if (app.status) {
       tags.push(app.status)
@@ -49,7 +56,9 @@ const prepareAppsForFrontend = (apps, daoAddress, networkType) => {
 
   return applyAppOverrides(apps)
     .map(app => {
-      const baseUrl = appBaseUrl(app, networkType)
+      const baseUrl = appBaseUrl(app, gateway)
+      // Remove the starting slash from the start_url field
+      // so the absolute path can be resolved from baseUrl.
       // Remove the starting slash from the start_url field
       // so the absolute path can be resolved from baseUrl.
       // const startUrl = removeStartingSlash(app['start_url'] || '')
@@ -57,7 +66,6 @@ const prepareAppsForFrontend = (apps, daoAddress, networkType) => {
 
       return {
         ...app,
-        // src,
         baseUrl,
         apmRegistry: getAPMRegistry(app),
         hasWebApp: hasWebApp(app),
@@ -90,12 +98,11 @@ export const pollConnectivity = pollEvery((providers = [], onConnectivity) => {
   // web.eth.net.isListening()
 }, POLL_DELAY_CONNECTIVITY)
 
-export const resolveEnsDomain = async (networkType='pulsechain', provider, domain) => {
+export const resolveEnsDomain = async domain => {
   try {
-    const registryAddress = getNetworkConfig(networkType).addresses.ensRegistry
     return await ensResolve(domain, {
-      provider,
-      registryAddress,
+      provider: web3Providers.default,
+      registryAddress: contractAddresses.ensRegistry,
     })
   } catch (err) {
     if (err.message === 'ENS name not defined.') {
@@ -105,14 +112,17 @@ export const resolveEnsDomain = async (networkType='pulsechain', provider, domai
   }
 }
 
-export const isEnsDomainAvailable = async (networkType, provider, name) => {
-  const addr = await resolveEnsDomain(networkType, provider, name)
+export const isEnsDomainAvailable = async name => {
+  const addr = await resolveEnsDomain(name)
   return addr === '' || isEmptyAddress(addr)
 }
 
-export const fetchApmArtifact = async (provider, repoAddress, ipfsGateway) => {
-  return apm(getWeb3(provider), {
-    ipfsGateway,
+export const fetchApmArtifact = async (
+  repoAddress,
+  ipfsConf = ipfsDefaultConf
+) => {
+  return apm(getWeb3(web3Providers.default), {
+    ipfsGateway: ipfsConf.gateway,
   }).fetchLatestRepoContent(repoAddress)
 }
 
@@ -140,7 +150,7 @@ const subscribe = (
     onSignatures,
     onTransaction,
   },
-  { networkType }
+  { ipfsConf }
 ) => {
   const {
     appIdentifiers,
@@ -170,7 +180,11 @@ const subscribe = (
 
     apps: apps.subscribe(apps => {
       onApps(
-        prepareAppsForFrontend(apps, wrapper.kernelProxy.address, networkType)
+        prepareAppsForFrontend(
+          apps,
+          wrapper.kernelProxy.address,
+          ipfsConf.gateway
+        )
       )
     }),
     workers: apps.subscribe(apps => {
@@ -183,9 +197,10 @@ const subscribe = (
             updated || !workerSubscriptionPool.hasWorker(proxyAddress)
         )
         .forEach(async app => {
-          const { name, proxyAddress, script, updated } = app
+          const { name, proxyAddress, script, updated, abi } = app
+          console.log(abi)
           const workerName = `${name}(${proxyAddress})`
-          const baseUrl = appBaseUrl(app, networkType)
+          const baseUrl = appBaseUrl(app, ipfsConf.gateway)
 
           // If the app URL is empty, the script can’t be retrieved
           if (!baseUrl) {
@@ -199,7 +214,7 @@ const subscribe = (
             baseUrl
           )
 
-          const connectApp = await wrapper.runApp(proxyAddress, appAbi)
+          const connectApp = await wrapper.runApp(proxyAddress, abi)
 
           // If the app has been updated, reset its cache and restart its worker
           if (updated && workerSubscriptionPool.hasWorker(proxyAddress)) {
@@ -230,8 +245,8 @@ const subscribe = (
 const initWrapper = async (
   dao,
   {
-    networkType,
     guiStyle = null,
+    ipfsConf = ipfsDefaultConf,
     onAppIdentifiers = noop,
     onApps = noop,
     onDaoAddress = noop,
@@ -246,53 +261,41 @@ const initWrapper = async (
     walletAccount = null,
   } = {}
 ) => {
-  const ipfsConf = { gateway: getIpfsGateway() }
   const isDomain = isValidEnsName(dao)
-  const daoAddress = isDomain
-    ? await resolveEnsDomain(networkType, provider, dao)
-    : dao
+  const daoAddress = isDomain ? await resolveEnsDomain(dao) : dao
 
   if (!daoAddress) {
     throw new DAONotFound(dao)
   }
 
-  const daoData = {
-    address: daoAddress,
-    domain: dao,
-    networkType,
-  }
-
-  // const data = await getOrganizationByAddress(networkType, daoAddress)
-  // if (data?.createdAt) {
-  //   // transform into ml seconds
-  //   daoData.createdAt = parseInt(data.createdAt) * 1000
-  // }
-
-  onDaoAddress(daoData)
+  onDaoAddress({ address: daoAddress, domain: dao })
 
   const wrapper = new Aragon(daoAddress, {
     provider,
     // Let web3 provider handle gas estimations on mainnet
+    defaultGasPriceFn: () =>
+      getGasPrice({
+        mainnet: { disableEstimate: true },
+        pulsechain: { disableEstimate: true },
+        private: { disableEstimate: true },
+      }),
     apm: {
-      ensRegistryAddress: getNetworkConfig(networkType).addresses.ensRegistry,
+      ensRegistryAddress: contractAddresses.ensRegistry,
       ipfs: ipfsConf,
     },
     cache: {
       // If the worker's origin sandbox is disabed, it has full access to IndexedDB.
       // We force a downgrade to localStorage to avoid using IndexedDB.
       forceLocalStorage: workerFrameSandboxDisabled,
-      prefix: networkType,
     },
     events: {
       // Infura hack: delay event processing for specified number of ms
       subscriptionEventDelay: getEthSubscriptionEventDelay(),
-      blockSizeLimit: getNetworkSettings(networkType).events?.blockSizeLimit,
     },
   })
 
   try {
     await wrapper.init({
-      network: {network: '943'},
       accounts: {
         providedAccounts: walletAccount ? [walletAccount] : [],
       },
@@ -303,7 +306,7 @@ const initWrapper = async (
       throw new DAONotFound(dao)
     }
     if (err.message === 'connection not open') {
-      throw new NoConnection('No blockchain connection detected')
+      throw new NoConnection('No Ethereum connection detected')
     }
 
     throw err
@@ -322,20 +325,26 @@ const initWrapper = async (
       onSignatures,
       onTransaction,
     },
-    { networkType }
+    { ipfsConf }
   )
 
   wrapper.connectAppIFrame = async (iframeElt, proxyAddress, appAbi) => {
     const provider = new providers.WindowMessage(iframeElt.contentWindow)
-    const appContext = (await wrapper.runApp(proxyAddress, appAbi))(provider)
+    console.log('proxyAddress:', proxyAddress)
+    try {
+      const appContext = (await wrapper.runApp(proxyAddress, appAbi))(provider)
 
-    if (subscriptions.connectedApp) {
-      subscriptions.connectedApp.unsubscribe()
+      if (subscriptions.connectedApp) {
+        subscriptions.connectedApp.unsubscribe()
+      }
+      subscriptions.connectedApp = {
+        unsubscribe: appContext.shutdown,
+      }
+      return appContext
+    } catch (e) {
+      console.log(e)
+      return null
     }
-    subscriptions.connectedApp = {
-      unsubscribe: appContext.shutdown,
-    }
-    return appContext
   }
 
   wrapper.cancel = () => {
