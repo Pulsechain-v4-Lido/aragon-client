@@ -154,7 +154,10 @@ function DotVotingScreen({
                 margin: 0 ${1.5 * GU}px;
               `}
             >
-              <KnownAppBadge appName="dot-voting.lidopm.eth" label={appLabel} />
+              <KnownAppBadge
+                appName="dot-voting.lidopm.eth"
+                label={appLabel}
+              />
             </span>
             settings below.
           </span>

@@ -9,7 +9,6 @@ export default {
   TokenManager: namehash('aragon-token-manager.lidopm.eth'),
   Vault: namehash('aragon-vault.lidopm.eth'),
   Voting: namehash('aragon-voting.lidopm.eth'),
-  Oracle: namehash('oracle.lidopm.eth'),
   Lido: namehash('lido.lidopm.eth'),
   StakingRouter: namehash('node-operators-registry.lidopm.eth'),
   Kernel: namehash('kernel.aragonpm.eth'),

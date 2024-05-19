@@ -111,7 +111,7 @@ const Organization = React.memo(function Organization({
 
   const organizationText = checksummedDaoAddr ? (
     <span>
-      This organization is deployed on the {network.name}.{' '}
+      This organization is deployed on the Ethereum {network.name}.{' '}
       {canUpgradeOrg ? (
         <span>
           <Link onClick={onShowOrgVersionDetails}>

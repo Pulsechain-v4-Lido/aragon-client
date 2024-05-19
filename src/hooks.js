@@ -12,7 +12,7 @@ import {
   identityEventTypes,
 } from './components/IdentityManager/IdentityManager'
 import keycodes from './keycodes'
-import { log, removeStartingSlash } from './utils'
+import { log } from './utils'
 import { addressesEqual } from './web3-utils'
 
 // Update `now` at a given interval.
@@ -144,7 +144,7 @@ export function usePromise(fn, memoParams, defaultValue) {
 export function useRepoDetails(baseUrl, detailsUrl) {
   const fetchDescription = async () => {
     try {
-      const raw = await fetch(`${baseUrl}${removeStartingSlash(detailsUrl)}`)
+      const raw = await fetch(`${baseUrl}${detailsUrl}`)
       return raw.text()
     } catch (e) {
       log('Error fetching decription: ', e)

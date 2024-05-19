@@ -19,8 +19,6 @@ const InstalledApps = React.memo(function InstalledApps({
   const rowHeight = compactMode ? 148 : 294
   const columnWidthMin = compactMode ? 328 : 30 * GU
 
-  console.log('repos of installed app')
-  console.log(repos)
   if (openedRepoId) {
     const openedRepo = repos.find(repo => repo.appId === openedRepoId)
     return (

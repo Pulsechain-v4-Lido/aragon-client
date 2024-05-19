@@ -250,18 +250,6 @@ export const KnownOrganizations = {
       },
     ].map(org => [org.address.toLowerCase(), org])
   ),
-  pulsechain: new Map(
-    [
-      {
-        address: '0x070aDBF46abABFfdB4733B396E852cEfA2F281B9',
-        domain: 'lido-dao.aragonid.eth',
-        image: lidoImage,
-        name: 'PoolSea',
-        template: TEMPLATE_COMPANY,
-        recommended: true,
-      },
-    ].map(org => [org.address.toLowerCase(), org])
-  ),
 }
 
 // Get the organizations that might appear in the suggestions,

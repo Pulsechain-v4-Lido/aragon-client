@@ -51,7 +51,6 @@ const SELECTOR_NETWORKS = [
     'Ethereum Testnet (Rinkeby)',
     'https://rinkeby.client.aragon.org/',
   ],
-  ['private', 'Pulse Chain V4', 'https://pulsechain-poolsea.netlify.app/'],
   ['goerli', 'Ethereum Testnet (Göerli)', 'https://testnet.lido.fi/'],
 ]
 if (network.type === 'ropsten') {
@@ -374,7 +373,7 @@ class App extends React.Component {
                           apps={appsWithIdentifiers}
                           permissions={permissions}
                         >
-                          <div css="position: relative; z-index: 0">
+                          <div style="position: relative; z-index: 0">
                             <OrgView
                               apps={appsWithIdentifiers}
                               appsStatus={appsStatus}

@@ -131,7 +131,10 @@ function LockScreen({
                 margin: 0 ${1.5 * GU}px;
               `}
             >
-              <KnownAppBadge appName="time-lock.lidopm.eth" label={appLabel} />
+              <KnownAppBadge
+                appName="time-lock.lidopm.eth"
+                label={appLabel}
+              />
             </span>
             settings below.
           </span>

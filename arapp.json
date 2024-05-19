@@ -29,11 +29,6 @@
       "registry": "0xfbae32d1cde62858bc45f51efc8cc4fa1415447e",
       "appName": "aragon.aragonpm.eth",
       "network": "rinkeby"
-    },
-    "pulsechain": {
-      "registry": "0x070aDBF46abABFfdB4733B396E852cEfA2F281B9",
-      "appName": "aragon.aragonpm.eth",
-      "network": "pulsechain"
     }
   },
   "roles": []

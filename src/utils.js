@@ -1,5 +1,3 @@
-import resolvePathname from 'resolve-pathname'
-
 export function pollEvery(fn, delay) {
   let timer = -1
   let stop = false
@@ -31,9 +29,7 @@ export function pollEvery(fn, delay) {
 
 // Get the icon URL of an app (legacy)
 export function legacyAppIconUrl(app) {
-  return app && app.baseUrl
-    ? resolvePathname('images/icon.svg', app.baseUrl)
-    : null
+  return app && app.baseUrl ? app.baseUrl + '/images/icon.svg' : null
 }
 
 // Get the best icon for the given size.
@@ -66,7 +62,7 @@ export function getAppIconBySize(icons, size = -1) {
 }
 
 export function imgSrcFromBase(baseUrl, imgSrc) {
-  return resolvePathname(removeStartingSlash(imgSrc), baseUrl)
+  return baseUrl + imgSrc
 }
 
 // Get the icon URL of an app.

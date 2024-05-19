@@ -75,11 +75,10 @@ function getExtendedRepos(appInstanceGroups, repos) {
       appGroup => appGroup.appId === repo.appId
     )
     const { name, instances, repoName } = appGroup || {}
-
     return {
       ...repo,
       // Use latest version’s assets
-      baseUrl: repoBaseUrl(repo.appId, repo.latestVersion),
+      baseUrl: appGroup.app.baseUrl,
       instances: instances || [],
       name: name || '',
       repoName: repoName || '',
@@ -104,10 +103,6 @@ const AppCenter = React.memo(function AppCenter({
   wrapper,
 }) {
   const [upgradePanelOpened, setUpgradePanelOpened] = useState(false)
-
-  console.log('repos')
-  console.log(repos)
-  console.log(reposLoading)
 
   const extendedRepos = useMemo(
     () => getExtendedRepos(appInstanceGroups, repos),

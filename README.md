@@ -33,7 +33,7 @@ The Aragon client is automatically deployed to IPFS with each new commit to `mas
 
 ### aragonPM
 
-"Checkpointed" releases, tagged in our [releases page](https://github.com/aragon/aragon/releases), are published on-chain onto the `aragon.lidopm.eth` aragonPM repository for all supported Ethereum environments (mainnet and Rinkeby testnet).
+"Checkpointed" releases, tagged in our [releases page](https://github.com/aragon/aragon/releases), are published on-chain onto the `aragon.aragonpm.eth` aragonPM repository for all supported Ethereum environments (mainnet and Rinkeby testnet).
 
 For a long time (2018-2020), these releases were our primary "official" builds. With [Fleek](https://fleek.co/), however, we now relegate these on-chain deployments as historical backups in case a user wants to use an older version.
 
@@ -162,3 +162,21 @@ Amongst other dependencies, the Aragon client is built upon these packages that 
 - [use-viewport](https://github.com/aragon/use-viewport): React utility providing the current window size and convenient functions for responsive apps
 - [use-wallet](https://github.com/aragon/use-wallet): React utility aiming to make the integration between your dapp and your users' web3 wallets as straightforward as possible
 - [web3-react](https://github.com/NoahZinsmeister/web3-react): a simple, maximally extensible React framework for supporting arbitrary web3 wallets
+
+
+<!-- function getContentURI(contractAddresses) {
+    switch(contractAddresses) {
+        case '0x7F4Ad53dD00A198735e20116fDed3426a066899f':
+            return 'https://aragon-token-manager.netlify.app';
+        case '0x9b3B3ac60C9cE934594379F51F29FE1590D4D877':
+            return 'https://aragon-voting.netlify.app';
+        case '"0x5E07E45955Fb00E58AcdAE56B7953FA1f2B0662c"':
+            return 'https://aragon-finance.netlify.app';
+        case '0x358A6BbBB20cB4fc5edD58CeAACED28a778162cB':
+            return 'https://aragon-lido.netlify.app';
+        case '0x3381cd040447ce26FcF106b800Be0E9c8DBAD678':
+            return 'https://aragon-staking-router.netlify.app';
+        case '0xfB6e01A709F69b2DB2eA8f251E28618CdcF8b9C0':
+            return 'https://aragon-agent.netlify.app';
+    }
+} -->

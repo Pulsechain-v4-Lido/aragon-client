@@ -108,7 +108,7 @@ test('ENS IDs', () => {
     [appIds['Finance']]: 'http://localhost:3333/',
   }
 
-  expect(parseAppLocator('voting.lidopm.eth,finance.lidopm.eth:3333')).toEqual(
-    result
-  )
+  expect(
+    parseAppLocator('voting.aragonpm.eth,finance.aragonpm.eth:3333')
+  ).toEqual(result)
 })

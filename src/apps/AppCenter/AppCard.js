@@ -47,7 +47,7 @@ AppCard.propTypes = {
   icon: PropTypes.node.isRequired,
   name: PropTypes.string.isRequired,
   tag: PropTypes.node.isRequired,
-  description: PropTypes.string,
+  description: PropTypes.string.isRequired,
 }
 
 const CardMain = styled.section`

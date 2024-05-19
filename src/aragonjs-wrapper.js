@@ -1,4 +1,3 @@
-import resolvePathname from 'resolve-pathname'
 import Aragon, {
   apm,
   ensResolve,
@@ -15,8 +14,7 @@ import {
 import { NoConnection, DAONotFound } from './errors'
 import { getEthSubscriptionEventDelay } from './local-settings'
 import { workerFrameSandboxDisabled } from './security/configuration'
-import { appBaseUrl } from './url-utils'
-import { noop, removeStartingSlash, pollEvery } from './utils'
+import { noop, pollEvery } from './utils'
 import {
   getGasPrice,
   getWeb3,
@@ -56,7 +54,6 @@ const prepareAppsForFrontend = (apps, daoAddress, gateway) => {
 
   return applyAppOverrides(apps)
     .map(app => {
-      const baseUrl = appBaseUrl(app, gateway)
       // Remove the starting slash from the start_url field
       // so the absolute path can be resolved from baseUrl.
       // Remove the starting slash from the start_url field
@@ -66,7 +63,6 @@ const prepareAppsForFrontend = (apps, daoAddress, gateway) => {
 
       return {
         ...app,
-        baseUrl,
         apmRegistry: getAPMRegistry(app),
         hasWebApp: hasWebApp(app),
         tags: getAppTags(app),
@@ -197,24 +193,16 @@ const subscribe = (
             updated || !workerSubscriptionPool.hasWorker(proxyAddress)
         )
         .forEach(async app => {
-          const { name, proxyAddress, script, updated, abi } = app
-          console.log(abi)
+          const { name, proxyAddress, script, updated, baseUrl } = app
           const workerName = `${name}(${proxyAddress})`
-          const baseUrl = appBaseUrl(app, ipfsConf.gateway)
-
-          // If the app URL is empty, the script can’t be retrieved
-          if (!baseUrl) {
-            return
-          }
 
           // Remove the starting slash from the script field to force it to
           // load relative to the app's base url
-          const scriptUrl = resolvePathname(
-            removeStartingSlash(script),
-            baseUrl
-          )
+          const scriptUrl = baseUrl + script
 
-          const connectApp = await wrapper.runApp(proxyAddress, abi)
+          console.log('scriptUrl', scriptUrl)
+
+          const connectApp = await wrapper.runApp(proxyAddress)
 
           // If the app has been updated, reset its cache and restart its worker
           if (updated && workerSubscriptionPool.hasWorker(proxyAddress)) {
@@ -328,11 +316,10 @@ const initWrapper = async (
     { ipfsConf }
   )
 
-  wrapper.connectAppIFrame = async (iframeElt, proxyAddress, appAbi) => {
+  wrapper.connectAppIFrame = async (iframeElt, proxyAddress) => {
     const provider = new providers.WindowMessage(iframeElt.contentWindow)
-    console.log('proxyAddress:', proxyAddress)
     try {
-      const appContext = (await wrapper.runApp(proxyAddress, appAbi))(provider)
+      const appContext = (await wrapper.runApp(proxyAddress))(provider)
 
       if (subscriptions.connectedApp) {
         subscriptions.connectedApp.unsubscribe()

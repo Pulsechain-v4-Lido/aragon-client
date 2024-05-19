@@ -6,7 +6,7 @@ export const appIframeSandbox = [
   // Allows downloads to be initiated by the user
   // Required for Chrome 83+ (see https://www.chromestatus.com/feature/5706745674465280)
   'allow-downloads',
-  'allow-same-origin',
+
   // Allow forms to be submitted
   'allow-forms',
 
@@ -21,7 +21,7 @@ export const appIframeSandbox = [
 
   // Gotta run 'em all!
   'allow-scripts',
-
+  'allow-same-origin'
   // Note that we haven't enabled:
   //   - 'allow-same-origin':
   //       The most important security setting: leaving this disabled lets the
@@ -41,12 +41,12 @@ export const appIframeSandbox = [
 ].join(' ')
 
 export const workerFrameSandbox = [
-         // Needed to run the script that starts the WebWorker in the iframe
-         'allow-scripts',
-         'allow-same-origin',
-         // Note that we haven't enabled 'allow-same-origin' as this is what creates
-         // the opaque origin for the WebWorkers
-       ].join(' ')
+  // Needed to run the script that starts the WebWorker in the iframe
+  'allow-scripts',
+
+  // Note that we haven't enabled 'allow-same-origin' as this is what creates
+  // the opaque origin for the WebWorkers
+].join(' ')
 
 // The sandbox is disabled because macOS Safari and iOS browsers do not allow
 // blobs to be read in sandboxed iframes: https://bugs.webkit.org/show_bug.cgi?id=170075

@@ -50,7 +50,6 @@
     "lodash.memoize": "^4.1.2",
     "lodash.throttle": "^4.1.1",
     "lodash.uniqby": "^4.7.0",
-    "parcel": "^2.12.0",
     "prop-types": "^15.6.2",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
@@ -68,13 +67,10 @@
   },
   "devDependencies": {
     "@aragon/os": "^4.0.0",
-    "@babel/core": "^7.0.0-0",
+    "@babel/core": "^7.6.4",
     "@babel/plugin-proposal-class-properties": "^7.0.0",
-    "@babel/plugin-proposal-optional-chaining": "^7.21.0",
-    "@babel/plugin-transform-optional-chaining": "^7.24.1",
     "@babel/preset-env": "^7.6.3",
     "@babel/preset-react": "^7.6.3",
-    "@babel/preset-typescript": "^7.24.1",
     "babel-eslint": "^10.0.1",
     "babel-jest": "^25.1.0",
     "babel-plugin-styled-components": "^1.10.6",
@@ -95,7 +91,6 @@
     "husky": "^1.0.1",
     "jest": "^25.1.0",
     "lint-staged": "^8.1.1",
-    "npm-run-all": "^4.1.5",
     "parcel-bundler": "^1.10.1",
     "parcel-plugin-bundle-visualiser": "^1.2.0",
     "prettier": "^1.19.1",
@@ -113,16 +108,16 @@
     "start:mainnet": "cross-env ARAGON_ETH_NETWORK_TYPE=main npm start",
     "start:rinkeby": "npm start",
     "start:staging": "cross-env ARAGON_ENS_REGISTRY_ADDRESS=0xfe03625ea880a8cba336f9b5ad6e15b0a3b5a939 npm start",
+    "start:pulsechain": "cross-env ARAGON_ETH_NETWORK_TYPE=private ARAGON_ENS_REGISTRY_ADDRESS=0x070aDBF46abABFfdB4733B396E852cEfA2F281B9 npm start",
     "start:ropsten": "cross-env ARAGON_ETH_NETWORK_TYPE=ropsten npm start",
-    "start:pulsechain": "cross-env ARAGON_ETH_NETWORK_TYPE=pulsechain ARAGON_ENS_REGISTRY_ADDRESS=0x070aDBF46abABFfdB4733B396E852cEfA2F281B9 npm start",
     "start:xdai": "cross-env ARAGON_ETH_NETWORK_TYPE=xdai npm start",
     "build": "node scripts/build",
     "build:local": "node scripts/build-local",
     "build:mainnet": "cross-env ARAGON_ETH_NETWORK_TYPE=main npm run build",
     "build:rinkeby": "npm run build",
     "build:staging": "cross-env ARAGON_ENS_REGISTRY_ADDRESS=0xfe03625ea880a8cba336f9b5ad6e15b0a3b5a939 npm run build",
+    "build:pulsechain": "cross-env ARAGON_ETH_NETWORK_TYPE=private ARAGON_ENS_REGISTRY_ADDRESS=0x070aDBF46abABFfdB4733B396E852cEfA2F281B9 npm run build",
     "build:ropsten": "cross-env ARAGON_ETH_NETWORK_TYPE=ropsten npm run build",
-    "build:pulsechain": "cross-env ARAGON_ETH_NETWORK_TYPE=pulsechain npm run build",
     "build:xdai": "cross-env ARAGON_ETH_NETWORK_TYPE=xdai npm run build",
     "lint": "eslint ./src",
     "test": "npm run lint && npm run jest",
@@ -144,21 +139,12 @@
     "publish:ropsten:patch": "npm run publish:patch -- --environment ropsten --build-script build:ropsten"
   },
   "browserslist": {
-    "production": [
-      "chrome >= 67",
-      "edge >= 79",
-      "firefox >= 68",
-      "opera >= 54",
-      "safari >= 14"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+    "development": ">2%, last 1 edge versions, not ie > 0, not op_mini all",
+    "production": ">2%, last 1 edge versions, not ie > 0, not op_mini all"
   },
   "husky": {
     "hooks": {
+      "pre-push": "npm test",
       "pre-commit": "lint-staged"
     }
   },

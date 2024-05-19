@@ -8,7 +8,7 @@ import { network } from './environment'
 import { getWeb3, filterBalanceValue } from './web3-utils'
 import { getWalletConnectRPC } from './network-config'
 
-const NETWORK_TYPE_DEFAULT = 'pulsechain'
+const NETWORK_TYPE_DEFAULT = 'private'
 
 const WalletContext = React.createContext()
 
@@ -24,6 +24,7 @@ function WalletContextProvider({ children }) {
 
   const [walletWeb3, setWalletWeb3] = useState(null)
   const [networkType, setNetworkType] = useState(NETWORK_TYPE_DEFAULT)
+
   useEffect(() => {
     let cancel = false
 
@@ -38,7 +39,7 @@ function WalletContextProvider({ children }) {
       .getNetworkType()
       .then(networkType => {
         if (!cancel) {
-          setNetworkType(NETWORK_TYPE_DEFAULT)
+          setNetworkType(networkType)
         }
         return null
       })

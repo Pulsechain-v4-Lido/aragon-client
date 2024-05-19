@@ -75,8 +75,6 @@ function App({
 
   const { instanceId, instancePath } = routing.mode
 
-  const targetApp = apps.filter(app => app.proxyAddress === instanceId)
-
   const appsLoading = appsStatus === APPS_STATUS_LOADING
   const reposLoading = appsLoading || Boolean(apps.length && !repos.length)
 
@@ -103,7 +101,7 @@ function App({
         return
       }
 
-      await wrapper.connectAppIFrame(iframeElement, instanceId, targetApp[0].abi)
+      await wrapper.connectAppIFrame(iframeElement, instanceId)
 
       appIFrameRef.current.sendMessage({
         from: 'wrapper',

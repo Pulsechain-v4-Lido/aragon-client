@@ -30,7 +30,7 @@ module.exports = {
     ],
     'promise/no-nesting': ['off'],
     'valid-jsdoc': 'error',
-    'linebreak-style': ['error', 'unix'],
+    'linebreak-style': ['error', 'windows'],
     curly: 'error',
   },
   settings: {

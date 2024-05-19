@@ -8,14 +8,7 @@ import {
   getIpfsGateway,
 } from './local-settings'
 import { getNetworkConfig } from './network-config'
-import AgentABI from './artifacts/Agent.json'
-import FinanceABI from './artifacts/Finance.json'
-import VotingABI from './artifacts/Voting.json'
-import TokenManagerABI from './artifacts/TokenManager.json'
-import VaultABI from './artifacts/Vault.json'
-import LidoABI from './artifacts/Lido.json'
-import OracleABI from './artifacts/Oracle.json'
-import StakingRouterABI from './artifacts/StakingRouter.json'
+
 const appsOrder = [
   'TokenManager',
   'Voting',
@@ -23,10 +16,6 @@ const appsOrder = [
   'Agent',
   'Lido',
   'StakingRouter',
-  'Oracle',
-  'Kernel',
-  'ACL',
-  'EVM Script Registry',
 ]
 
 const networkType = getEthNetworkType()
@@ -79,69 +68,51 @@ export const sortAppsPair = (app1, app2) => {
 
 // Use appOverrides to override specific keys in an app instance, e.g. the start_url or script location
 export const appOverrides = {
-         // Needed to change app name on sidebar for old versions whose aragonPM repo content cannot be changed anymore
-         [appIds['Kernel']]: {
-           src: '/',
-         },
-         [appIds['ACL']]: {
-           src: '/',
-         },
-         [appIds['EVMREGISTRY']]: {
-           src: '/',
-         },
-         [appIds['TokenManager']]: {
-           abi: TokenManagerABI.abi,
-           name: 'Tokens',
-           appName: 'aragon-token-manager.lidopm.eth',
-           start_url: '/',
-           src: 'https://aragon-token-manager.netlify.app',
-         },
-         [appIds['Voting']]: {
-           abi: VotingABI.abi,
-           name: 'Voting',
-           appName: 'aragon-voting.lidopm.eth',
-           start_url: '/',
-           src: 'https://aragon-voting.netlify.app',
-         },
-         [appIds['Finance']]: {
-           abi: FinanceABI.abi,
-           name: 'Finance',
-           appName: 'aragon-finance.lidopm.eth',
-           start_url: '/',
-           src: 'https://aragon-finance.netlify.app',
-         },
-         [appIds['Agent']]: {
-           abi: AgentABI.abi,
-           name: 'Agent',
-           appName: 'aragon-agent.lidopm.eth',
-           start_url: '/',
-           src: 'https://aragon-agent.netlify.app',
-         },
-         [appIds['Lido']]: {
-           abi: LidoABI.abi,
-           name: 'Lido',
-           appName: 'lido.lidopm.eth',
-           start_url: '/index.html',
-           src:
-             'https://ipfs.io/ipfs/QmRSXAZrF2xR5rgbUdErDV6LGtjqQ1T4AZgs6yoXosMQc3',
-         },
-         [appIds['StakingRouter']]: {
-           abi: StakingRouterABI.abi,
-           name: 'StakingRouter',
-           start_url: '/index.html',
-           appName: 'node-operators-registry.lidopm.eth',
-           src:
-             'https://ipfs.io/ipfs/QmT4jdi1FhMEKUvWSQ1hwxn36WH9KjegCuZtAhJkchRkzp', //
-         },
-         [appIds['Oracle']]: {
-           abi: OracleABI.abi,
-           name: 'Oracle',
-           appName: 'oracle.lidopm.eth',
-           start_url: '/index.html',
-           src:
-             'https://ipfs.io/ipfs/QmWTacPAUrQaCvAMVcqnTXvnr9TLfjWshasc4xjSheqz2i',
-         },
-       }
+  // Needed to change app name on sidebar for old versions whose aragonPM repo content cannot be changed anymore
+  // Needed to change app name on sidebar for old versions whose aragonPM repo content cannot be changed anymore
+  [appIds['Kernel']]: {
+    src: '/',
+    baseUrl: '/',
+  },
+  [appIds['ACL']]: {
+    src: '/',
+    baseUrl: '/',
+  },
+  [appIds['EVMREGISTRY']]: {
+    src: '/',
+    baseUrl: '/',
+  },
+  [appIds['TokenManager']]: {
+    name: 'Tokens',
+    baseUrl: 'https://aragon-token-manager.netlify.app',
+    src: 'https://aragon-token-manager.netlify.app',
+  },
+  [appIds['Voting']]: {
+    baseUrl: 'https://aragon-voting.netlify.app',
+    src: 'https://aragon-voting.netlify.app',
+  },
+  [appIds['Finance']]: {
+    baseUrl: 'https://aragon-finance.netlify.app',
+    src: 'https://aragon-finance.netlify.app',
+  },
+  [appIds['Agent']]: {
+    baseUrl: 'https://aragon-agent.netlify.app',
+    src: 'https://aragon-agent.netlify.app',
+  },
+  [appIds['Lido']]: {
+    baseUrl: 'https://aragon-lido.netlify.app',
+    src: 'https://aragon-lido.netlify.app',
+  },
+  [appIds['StakingRouter']]: {
+    baseUrl: 'https://aragon-staking-router.netlify.app', //
+    src: 'https://aragon-staking-router.netlify.app', //
+  },
+  [appIds['Oracle']]: {
+    baseUrl: 'https://aragon-lido-oracle.netlify.app',
+    src: 'https://aragon-lido-oracle.netlify.app',
+  },
+}
+
 export const appLocator = parseAppLocator(getAppLocator())
 
 export const ipfsDefaultConf = {
@@ -175,14 +146,4 @@ export const defaultEthNode =
 
 export const web3Providers = {
   default: new Web3.providers.WebsocketProvider(defaultEthNode),
-}
-export function getParsedAppLocator(networkType) {
-  return parseAppLocator(getAppLocator(networkType))
-}
-
-export const getEthNode = networkType => {
-  return (
-    getDefaultEthNode(networkType) ||
-    getNetworkConfig(networkType).nodes.defaultEth
-  )
 }
